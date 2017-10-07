@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.zhiyou100.dao.InsertTeaDao">
+  	
+  	<insert id="saveTea" parameterType="teaInsert">
+  		insert into tea_insert(shape,color,neatness,color_tea,aroma,taste,leaves,grade,grade_number) 
+  		values(#{shape}, #{color}, #{neatness}, #{colorTea},#{aroma},#{taste},#{leaves},#{grade},#{gradeNumber})
+  	</insert>
+  
+  <select id="listInsertTea" parameterType="selectKey" resultType="teaInsert">
+  		select * from tea_insert where status = 0 
+  		<if test="gradeKey!=0 or createKey!=0"  >
+  			order by 
+  		</if> 
+  		
+  		
+  		<if test="gradeKey==1">
+  			grade_number desc
+  		</if>
+  		<if test="gradeKey==-1">
+  			grade_number asc
+  		</if>
+  		<if test="createKey==1">
+  			gmt_create asc
+  		</if>
+  		<if test="createKey==-1">
+  			gmt_create desc
+  		</if>
+  		limit #{page},7;
+  </select>
+  
+  <select id="getGradeNumber" resultType="int">
+  		select count(*) from tea_insert where status = 0 and grade = #{grade};
+  </select>
+  
+  
+  <select id="getTea" resultType="teaInsert">
+  		select shape,color,neatness,color_tea,aroma, taste, leaves from tea_insert where id = #{id};
+  </select>
+  
+  
+  <select id="getCount" resultType="Integer">
+  		select count(*) from tea_insert;
+  </select>
+  </mapper>

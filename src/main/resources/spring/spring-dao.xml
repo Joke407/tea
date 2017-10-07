@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <context:component-scan base-package="com.zhiyou100.dao"></context:component-scan>
+    
+    <context:property-placeholder location="classpath:spring/db.properties"/>
+     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    
+     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 设置mybatis 配置文件的路径 -->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+        <!-- 自动起别名 -->
+        <property name="typeAliasesPackage" value="com.zhiyou100.model"></property>
+        <!-- 设置mapper的路径 -->
+        <property name="mapperLocations" value="classpath*:mybatis/*Mapper.xml"></property>
+        
+    </bean>
+    
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 把dao 包下的接口的实现类注入到spring容器中 -->
+        <property name="basePackage" value="com.zhiyou100.dao"></property>
+    </bean>
+    
+    
+    </beans>

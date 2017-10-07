@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.zhiyou100.dao.VoteTeaDao">
+  	
+  	<select id="listVoteTea" resultType="teaVote">
+  		select image, vote,id from tea_vote where status = 0;
+  	</select>
+  	
+  	<select id="listFrontVoteTea" resultType="teaVote">
+  		select name, vote from tea_vote where status = 0 order by vote desc limit 0,8;
+  	</select>
+  	
+  	<update id="addVote" parameterType="int">
+  		
+  		update tea_vote set vote=vote+1   where status = 0 and id = #{id};
+  	</update>
+  </mapper>
